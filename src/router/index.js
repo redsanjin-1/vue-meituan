@@ -60,12 +60,7 @@ export default new Router({
     // 根路径
     {
       path: '/',
-      redirect: '/index',
-      component: Index,
-      name: 'index',
-      meta: {
-        keepAlive: true
-      }
+      redirect: '/index'
     },
     // 首页
     {
@@ -97,15 +92,27 @@ export default new Router({
       children: [
         {
           path: 'goods',
-          component: Goods
+          component: Goods,
+          name: 'goods',
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'ratings',
-          component: Ratings
+          component: Ratings,
+          name: 'ratings',
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'seller',
-          component: Seller
+          name: 'seller',
+          component: Seller,
+          meta: {
+            keepAlive: true
+          }
         }
       ]
     },
