@@ -1,9 +1,9 @@
 <template>
-  <span class="stars-list">
+  <span class="stars-list" :style="{fontSize:size+'px'}">
     <span v-for="item in monthSaleNumArray" :key="item.key">
-      <img src="http://p53zq2w8v.bkt.clouddn.com/star/star0.png" v-if="item==0">
-      <img src="http://p53zq2w8v.bkt.clouddn.com/star/star1.png" v-if="item==1">
-      <img src="http://p53zq2w8v.bkt.clouddn.com/star/star2.png" v-if="item==2">
+      <img src="http://p53zq2w8v.bkt.clouddn.com/star/star0.png" v-if="item==0" :style="{width:size+'px',height:size+'px'}">
+      <img src="http://p53zq2w8v.bkt.clouddn.com/star/star1.png" v-if="item==1" :style="{width:size+'px',height:size+'px'}">
+      <img src="http://p53zq2w8v.bkt.clouddn.com/star/star2.png" v-if="item==2" :style="{width:size+'px',height:size+'px'}">
     </span>
   </span>
 </template>
@@ -12,9 +12,13 @@
 export default {
   components: {},
   props: {
-    resScore: {
+    score: {
       type: Number,
       default: 0.0
+    },
+    size: {
+      type: Number,
+      default: 12
     }
   },
   data() {
@@ -22,7 +26,7 @@ export default {
   },
   computed: {
     monthSaleNumArray: function() {
-      let score = this.resScore.toString(),
+      let score = this.score.toString(),
         count = score.slice(0, 1),
         hasHalf = score.slice(2) === "0" ? 0 : 1,
         arr = [],
@@ -49,12 +53,9 @@ export default {
 
 <style lang='scss' scoped>
 .stars-list {
-  display: flex;
-  height: 12px; /*no*/
+  display: inline-block;
   img {
-    display: block;
-    width: 12px; /*no*/
-    height: 12px; /*no*/
+    display: inline-block;
   }
 }
 </style>

@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { Toast, Indicator, Lazyload, Swipe, SwipeItem, Loadmore, Popup } from 'mint-ui'
+import { Toast, Indicator, Lazyload, Swipe, SwipeItem, Loadmore, Popup, Badge } from 'mint-ui'
 import axios from 'axios'
 
 Vue.config.productionTip = false
@@ -20,6 +20,7 @@ Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.component(Loadmore.name, Loadmore)
 Vue.component(Popup.name, Popup)
+Vue.component(Badge.name, Badge)
 
 // axios
 axios.defaults.withCredentials = true

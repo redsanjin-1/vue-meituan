@@ -8,7 +8,7 @@
       <h2 class="res-name">{{resName}}</h2>
       <div class="res-saleInfo">
         <div class="res-score-sale">
-          <stars :resScore="resScore"></stars>
+          <stars :score="resScore"></stars>
           <span>月售{{monthSaleNum}}</span>
         </div>
         <div class="res-delivTime-distance">
