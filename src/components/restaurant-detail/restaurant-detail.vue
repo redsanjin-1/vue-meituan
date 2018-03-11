@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="res-detail-wrapper">
     <div class="res-header" v-if="resInfo">
       <div class="res-background" :style="{backgroundImage:'url('+resInfo.image_path+')'}"></div>
       <!-- avatar -->
@@ -52,29 +52,30 @@
 
     <!-- tab -->
     <ul class="tab-wrapper">
-      <router-link tag="li" to="/restaurant/goods" class="tab-item">
+      <li class="tab-item" @click="tapTabbar('/',0)" :class="{tabActived:activedTabIndex===0}">
         <span>点餐</span>
-      </router-link>
-      <router-link tag="li" to="/restaurant/ratings" class="tab-item">
+      </li>
+      <li class="tab-item" @click="tapTabbar('/ratings',1)" :class="{tabActived:activedTabIndex===1}">
         <span>评价</span>
-      </router-link>
-      <router-link tag="li" to="/restaurant/seller" class="tab-item">
+      </li>
+      <li class="tab-item" @click="tapTabbar('/seller',2)" :class="{tabActived:activedTabIndex===2}">
         <span>商家</span>
-      </router-link>
+      </li>
     </ul>
-    <!-- <keep-alive>
+    <keep-alive>
       <router-view v-if="$route.meta.keepAlive"/>
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"/> -->
+    <router-view v-if="!$route.meta.keepAlive"/>
     <!-- include中的值是组件中的name值，不是router的name -->
-    <keep-alive include="goods,ratings,seller">
+    <!-- <keep-alive include="goods,ratings,seller">
       <router-view></router-view>
-    </keep-alive>
+    </keep-alive> -->
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 import api from "@/api/api.js";
+import utils from "@/assets/js/utils.js";
 
 export default {
   components: {},
@@ -84,7 +85,8 @@ export default {
       resInfo: {
         activities: []
       },
-      showActivity: false
+      showActivity: false,
+      activedTabIndex: 0
     };
   },
   computed: {
@@ -100,6 +102,7 @@ export default {
       })
         .then(res => {
           this.resInfo = res.data.data;
+          utils.store.setLocalstorage("resInfo", res.data.data);
         })
         .catch(e => {
           console.log(e);
@@ -107,6 +110,10 @@ export default {
     },
     goBack() {
       this.$router.push("/index");
+    },
+    tapTabbar(url, index) {
+      this.activedTabIndex = index;
+      this.$router.push("/restaurant/" + this.$route.params.rid + url);
     },
     tapShowActivity() {
       this.showActivity = !this.showActivity;
@@ -124,6 +131,9 @@ export default {
 
 <style lang='scss' scoped>
 @import "~@/assets/scss/mixin.scss";
+.res-detail-wrapper {
+  background-color: #efefef;
+}
 .res-header {
   position: relative;
   display: flex;
@@ -280,9 +290,9 @@ export default {
     flex: 1;
     text-align: center;
   }
-  li.router-link-active {
+  .tabActived {
     font-weight: 700;
-    border-bottom: 3px solid #ffda61;
+    border-bottom: 3px solid #ffda61; /*no*/
     color: #000;
   }
 }

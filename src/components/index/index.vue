@@ -134,12 +134,7 @@ export default {
       }
     },
     goResDetail(id) {
-      this.$router.push({
-        name: "restaurant",
-        params: {
-          resId: id
-        }
-      });
+      this.$router.push("/restaurant/" + id);
     }
   },
   mounted() {

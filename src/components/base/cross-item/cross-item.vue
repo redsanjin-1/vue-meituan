@@ -4,7 +4,7 @@
       <i :class="iconfont"></i>
       <span class="item-title">{{title}}</span>
     </div>
-    <i class="iconfont icon-right"></i>
+    <i class="iconfont icon-right" v-if="hasRightArrow"></i>
   </div>
 </template>
 
@@ -13,7 +13,8 @@ export default {
   components: {},
   props: {
     name: {
-      type: String
+      type: String,
+      default: "question"
     },
     title: {
       type: String
@@ -25,6 +26,10 @@ export default {
     hasMarginBottom: {
       type: Boolean,
       default: false
+    },
+    hasRightArrow: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -48,11 +53,12 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 88px;
-  padding: 0 30px;
+  padding: 20px 30px;
   font-size: 14px; /*no*/
   background-color: #fff;
   .item-name {
+    display: flex;
+    align-items: center;
     color: #333;
     .item-title {
       padding-left: 20px;

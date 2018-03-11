@@ -29,11 +29,6 @@ const RestaurantDetail = (resolve) => {
     resolve(module)
   })
 }
-const RestaurantList = (resolve) => {
-  import('@/components/restaurant-item/restaurant-item').then((module) => {
-    resolve(module)
-  })
-}
 const Goods = (resolve) => {
   import('@/components/restaurant-detail/goods/goods').then((module) => {
     resolve(module)
@@ -77,21 +72,14 @@ export default new Router({
       component: login,
       name: 'login'
     },
-    // 商家列表
-    {
-      path: '/restaurantList',
-      component: RestaurantList,
-      name: 'restaurantList'
-    },
     // 商家模块
     {
-      path: '/restaurant',
-      redirect: '/restaurant/goods',
+      path: '/restaurant/:rid',
       component: RestaurantDetail,
       name: 'restaurant',
       children: [
         {
-          path: 'goods',
+          path: '',
           component: Goods,
           name: 'goods',
           meta: {
