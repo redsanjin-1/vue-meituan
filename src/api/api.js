@@ -7,6 +7,6 @@ export default {
   "indexList2": baseUrl + "/indexList2",
   "findList": baseUrl + "/findList",
   "resInfo": baseUrl + "/resInfo",
-  "goods": baseUrl + "goods",
+  "goods": baseUrl + "/goods",
   "ratings": baseUrl + "/ratings"
 }

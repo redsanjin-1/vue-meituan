@@ -1,37 +1,39 @@
 <template>
   <div class="res-detail-wrapper">
-    <div class="res-header" v-if="resInfo">
-      <div class="res-background" :style="{backgroundImage:'url('+resInfo.image_path+')'}"></div>
-      <!-- avatar -->
-      <img class="res-avatar" :src="resInfo.image_path">
-      <!-- detail -->
-      <div class="res-detail">
-        <p class="res-name">
-          <span class="res-brand">{{resInfo.brand}}</span>
-          {{resInfo.name}}
-        </p>
-        <p class="res-info">
-          <span class="res-delivery-mode">{{resInfo.delivery_mode}}</span>/
-          <span class="res-delivery-time">{{resInfo.avg_delivery_time}}分钟送达</span>
-        </p>
-        <p class="res-activity" v-if="resInfo.activities.length>0">
-          <span class="res-iconname" :style="{backgroundColor:'#'+resInfo.activities[0].icon_color}">{{resInfo.activities[0].icon_name}}</span>
-          <span class="res-activity-name">{{resInfo.activities[0].name}}</span>
-        </p>
-      </div>
-      <!-- fn -->
-      <div class="fn-wrapper">
-        <i class="iconfont icon-back fn-back" @click="goBack"></i>
-        <div class="activity-count" @click="tapShowActivity">
-          <span>{{activityCount}}个活动</span>
-          <i class="iconfont icon-right"></i>
+    <div class="res-header-wrapper">
+      <div class="res-header" v-if="resInfo">
+        <div class="res-background" :style="{backgroundImage:'url('+resInfo.image_path+')'}"></div>
+        <!-- avatar -->
+        <img class="res-avatar" :src="resInfo.image_path">
+        <!-- detail -->
+        <div class="res-detail">
+          <p class="res-name">
+            <span class="res-brand">{{resInfo.brand}}</span>
+            {{resInfo.name}}
+          </p>
+          <p class="res-info">
+            <span class="res-delivery-mode">{{resInfo.delivery_mode}}</span>/
+            <span class="res-delivery-time">{{resInfo.avg_delivery_time}}分钟送达</span>
+          </p>
+          <p class="res-activity" v-if="resInfo.activities.length>0">
+            <span class="res-iconname" :style="{backgroundColor:'#'+resInfo.activities[0].icon_color}">{{resInfo.activities[0].icon_name}}</span>
+            <span class="res-activity-name">{{resInfo.activities[0].name}}</span>
+          </p>
+        </div>
+        <!-- fn -->
+        <div class="fn-wrapper">
+          <i class="iconfont icon-back fn-back" @click="goBack"></i>
+          <div class="activity-count" @click="tapShowActivity">
+            <span>{{activityCount}}个活动</span>
+            <i class="iconfont icon-right"></i>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="bulletin">
-      <span class="bulletin-brand">公告</span>
-      <span class="bulletin-content">{{resInfo.promotion_info}}</span>
-      <i class="iconfont icon-right"></i>
+      <div class="bulletin">
+        <span class="bulletin-brand">公告</span>
+        <span class="bulletin-content">{{resInfo.promotion_info}}</span>
+        <i class="iconfont icon-right"></i>
+      </div>
     </div>
     <!-- 活动列表 -->
     <mt-popup v-model="showActivity" position="bottom">
@@ -51,7 +53,7 @@
     </mt-popup>
 
     <!-- tab -->
-    <ul class="tab-wrapper">
+    <ul class="tab-wrapper" v-fixedTop="hasScrollToTarget">
       <li class="tab-item" @click="tapTabbar('/',0)" :class="{tabActived:activedTabIndex===0}">
         <span>点餐</span>
       </li>
@@ -82,6 +84,7 @@ export default {
   props: {},
   data() {
     return {
+      hasScrollToTarget: false,
       resInfo: {
         activities: []
       },
@@ -92,6 +95,19 @@ export default {
   computed: {
     activityCount: function() {
       return this.resInfo.activities.length;
+    }
+  },
+  directives: {
+    fixedTop: {
+      inserted(el) {
+        // document.addEventListener("scroll", function(e) {
+        // if (e.currentTarget.scrollTop > 118) {
+        //   this.hasScrollToTarget = true;
+        // } else {
+        //   this.hasScrollToTarget = false;
+        // }
+        // });
+      }
     }
   },
   methods: {
@@ -117,13 +133,24 @@ export default {
     },
     tapShowActivity() {
       this.showActivity = !this.showActivity;
+    },
+    onResWrapperScroll() {
+      this.$nextTick(() => {
+        this.$refs.resWrapper.onscroll = function(e) {
+          console.log(e);
+          console.log(1);
+        };
+        console.log(this.$refs);
+      });
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this._getResInfo();
+    // this.onResWrapperScroll();
+  },
   activated() {
     // 由于使用 keep-alive ，若每次进入页面需重新获取数据，须在这个钩子函数执行
-    this._getResInfo();
   },
   destroyed() {}
 };
@@ -280,14 +307,14 @@ export default {
 
 .tab-wrapper {
   display: flex;
-  height: 80px;
-  line-height: 80px;
   background-color: #fff;
   color: #999;
   font-size: 16px; /*no*/
   border-bottom: 1px solid #ddd;
   .tab-item {
     flex: 1;
+    height: 40px; /*no*/
+    line-height: 40px; /*no*/
     text-align: center;
   }
   .tabActived {
@@ -295,5 +322,11 @@ export default {
     border-bottom: 3px solid #ffda61; /*no*/
     color: #000;
   }
+}
+.fixedTop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 </style>
