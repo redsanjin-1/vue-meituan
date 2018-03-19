@@ -26,18 +26,29 @@
 
 2. 发现页是一个文章列表，没什么好讲的，使用 v-lazy 来懒加载图片。  
 
-![](http://p53zq2w8v.bkt.clouddn.com/gif/find.gif)  
+![](http://p53zq2w8v.bkt.clouddn.com/gif/mfind.gif)  
 
 3. 订单页也是一个列表，同上。  
 
-![](http://p53zq2w8v.bkt.clouddn.com/gif/order.gif)  
+![](http://p53zq2w8v.bkt.clouddn.com/gif/morder.gif)  
 
 4. 我的信息页也仅是简单布局，**下面划重点了**。  
 
 ![](http://p53zq2w8v.bkt.clouddn.com/gif/my.jpg)  
 
-5. 商家详情页由三大子路由，分别是点餐，评价和商家  
+5. 商家详情页由三大子路由，分别是点餐，评价和商家  
 
+>点餐  
+
+![](http://p53zq2w8v.bkt.clouddn.com/res/goods.jpg)  
+
+>评价  
+
+![](http://p53zq2w8v.bkt.clouddn.com/res/ratings.jpg)
+  
+>商家  
+
+![](http://p53zq2w8v.bkt.clouddn.com/res/seller.jpg)  
 
 ## 总结
 
@@ -50,6 +61,6 @@
 ***
 **:sunglasses: 以下是鄙人的微信，有兴趣加我一起交流学习前端的心得，**  
 **:kissing_heart: 我可以提供 ES6、VUE、小程序、Nodejs 等珍藏的视频给你**  
-**:eyes: 其他vue常用库学习请到[隔壁观望](https://github.com/opendigg/awesome-github-vue)**  
+**:eyes: vue相关学习请到[隔壁观望](https://github.com/answershuto/learnVue)**  
 
 ![](http://p4v5t5a1b.bkt.clouddn.com/myWeChat.jpg)
