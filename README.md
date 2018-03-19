@@ -53,14 +53,16 @@
 
 ![](http://p53zq2w8v.bkt.clouddn.com/res/ratings.gif)  
 
-(1) 商品评价列表使用[filter](http://doc.vue-js.com/v2/api/#Vue-filter)
+(1) 商品评价列表使用[filter](http://doc.vue-js.com/v2/api/#Vue-filter)  
+
 (2) 复用stars组件，使用filter格式化原始的评价时间戳为目标格式
   
 >商家  
 
 ![](http://p53zq2w8v.bkt.clouddn.com/res/seller.gif)  
 
-(1) 商家详情信息item 复用 cross-item 组件
+(1) 商家详情信息item 复用 cross-item 组件  
+
 (2) 商家活动弹窗使用 mt-popup ,其实使用 transition 组件亦可
 
 ## 总结
