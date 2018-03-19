@@ -28,11 +28,13 @@ export default {
   },
   methods: {
     _getFindList() {
+      this.$indicator.open("加载中...");
       this.$ajax({
         method: "get",
         url: api.findList
       })
         .then(res => {
+          this.$indicator.close();
           this.findList = res.data.data;
         })
         .catch(e => {

@@ -1,8 +1,12 @@
 <template>
   <div class="cart-controll-wrapper">
-    <img :src="imgRemove" class="cart remove" v-show="food.count>0" @click="remove"/>
+    <transition name="move">
+      <div class="remove-wrapper"  @click.stop="remove" v-show="food.count>0">
+        <img :src="imgRemove" class="cart remove"/>
+      </div>
+    </transition>
     <span class="count" v-show="food.count>0">{{food.count}}</span>  
-    <img :src="imgAdd" class="cart add" @click="add"/>
+    <img :src="imgAdd" class="cart add" @click.stop="add($event)"/>
   </div> 
 </template>
 
@@ -28,13 +32,15 @@ export default {
     remove() {
       this.food.count && this.food.count--;
     },
-    add() {
+    add(event) {
       if (this.food.count) {
         this.food.count++;
       } else {
         // 重点：使用 set 可以 使新加的 count属性能够 动态响应
         this.$set(this.food, "count", 1);
       }
+      // 将当前 dom 传递出去，用来做小球飞入效果
+      this.$emit("drop", event.target);
     }
   },
   created() {},
@@ -48,7 +54,28 @@ export default {
 .cart-controll-wrapper {
   display: flex;
   align-items: center;
+  .remove-wrapper {
+    transition: all 0.3s linear;
+    height: 40px; /*no*/
+    .remove {
+      transition: all 0.3s linear;
+      transform: rotate(0);
+    }
+    &.move-transition {
+      opacity: 1;
+      transform: translate3D(0, 0, 0);
+    }
+    &.move-enter,
+    &.move-leave {
+      opacity: 0;
+      transform: translate3D(24px, 0, 0);
+      .remove {
+        transform: rotate(180deg);
+      }
+    }
+  }
   .cart {
+    display: inline-block;
     width: 40px;
     height: 40px;
     padding: 20px;

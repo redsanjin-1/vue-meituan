@@ -76,10 +76,10 @@ export default new Router({
     {
       path: '/restaurant/:rid',
       component: RestaurantDetail,
-      name: 'restaurant',
+      // name: 'restaurant',
       children: [
         {
-          path: '',
+          path: '/',
           component: Goods,
           name: 'goods',
           meta: {

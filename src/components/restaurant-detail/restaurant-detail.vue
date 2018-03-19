@@ -53,7 +53,7 @@
     </mt-popup>
 
     <!-- tab -->
-    <ul class="tab-wrapper" v-fixedTop="hasScrollToTarget">
+    <ul class="tab-wrapper">
       <li class="tab-item" @click="tapTabbar('/',0)" :class="{tabActived:activedTabIndex===0}">
         <span>点餐</span>
       </li>
@@ -84,7 +84,6 @@ export default {
   props: {},
   data() {
     return {
-      hasScrollToTarget: false,
       resInfo: {
         activities: []
       },
@@ -98,17 +97,17 @@ export default {
     }
   },
   directives: {
-    fixedTop: {
-      inserted(el) {
-        // document.addEventListener("scroll", function(e) {
-        // if (e.currentTarget.scrollTop > 118) {
-        //   this.hasScrollToTarget = true;
-        // } else {
-        //   this.hasScrollToTarget = false;
-        // }
-        // });
-      }
-    }
+    // fixedTop: {
+    //   inserted(el) {
+    //     document.addEventListener("scroll", function(e) {
+    //     if (e.currentTarget.scrollTop > 118) {
+    //       this.hasScrollToTarget = true;
+    //     } else {
+    //       this.hasScrollToTarget = false;
+    //     }
+    //     });
+    //   }
+    // }
   },
   methods: {
     _getResInfo() {
@@ -185,7 +184,7 @@ export default {
     height: 128px;
   }
   .res-detail {
-    // width: 370px;
+    max-width: 400px;
     flex: 1;
     margin-left: 20px;
     .res-name {

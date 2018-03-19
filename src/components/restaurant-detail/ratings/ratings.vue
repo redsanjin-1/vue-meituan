@@ -101,11 +101,13 @@ export default {
   },
   methods: {
     _getRatings() {
+      this.$indicator.open("加载中...");
       this.$ajax({
         method: "get",
         url: api.ratings
       })
         .then(res => {
+          this.$indicator.close();
           this.ratings = res.data.data;
         })
         .catch(e => {

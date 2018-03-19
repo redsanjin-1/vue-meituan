@@ -12,10 +12,12 @@
 export default {
   components: {},
   props: {
+    // iconfont 的名称
     name: {
       type: String,
       default: "question"
     },
+    // item 的 标题
     title: {
       type: String
     },
@@ -27,6 +29,7 @@ export default {
       type: Boolean,
       default: false
     },
+    // 是否有跳转的箭头图标
     hasRightArrow: {
       type: Boolean,
       default: true

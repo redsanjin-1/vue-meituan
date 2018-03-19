@@ -60,14 +60,48 @@ export default {
       swipeList: [],
       itemTypes: [],
       restaurantList: [],
-      allLoaded: false,
       pageIndex: 0,
+      // 以下属性为 mt-loaded需要的，详见官网
+      allLoaded: false,
       listWrapperHeight: 0,
       autoFill: false,
       bottomLoadingText: "正在加载..."
     };
   },
   methods: {
+    // indicator 须在 3个请求同时完成时才消失，这里使用 axios.all([...])
+    _minit() {
+      this.$indicator.open("加载中...");
+      this.$ajax
+        .all([
+          this.$ajax({
+            method: "get",
+            url: api.getSwipeList
+          }),
+          this.$ajax({
+            method: "get",
+            url: api.getItemTypes
+          }),
+          this.$ajax({
+            method: "get",
+            url: api["indexList" + this.pageIndex]
+          })
+        ])
+        .then(
+          this.$ajax.spread((r1, r2, r3) => {
+            // 轮播图
+            this.swipeList = r1.data.data;
+            // 商家类型
+            this.itemTypes = r2.data.data;
+            // 商家列表
+            this.restaurantList = r3.data.data.poilist;
+            this.pageIndex = this.pageIndex + 1;
+            this.allLoaded = r3.data.allLoaded;
+            this.autoFill = true;
+            this.$indicator.close();
+          })
+        );
+    },
     _getSwipeList() {
       this.$ajax({
         method: "get",
@@ -139,9 +173,10 @@ export default {
   },
   mounted() {
     this.listWrapperHeight = document.documentElement.clientHeight - 50;
-    this._getSwipeList();
-    this._getItemTypes();
-    this._getRestaurantList();
+    // this._getSwipeList();
+    // this._getItemTypes();
+    // this._getRestaurantList();
+    this._minit();
   }
 };
 </script>

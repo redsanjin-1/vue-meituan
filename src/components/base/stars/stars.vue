@@ -25,6 +25,8 @@ export default {
     return {};
   },
   computed: {
+    // 将传入的 score 转换成 输入
+    // 4.5 -> [2,2,2,2,1]  2是整颗星，1是半颗星，0是没有星
     monthSaleNumArray: function() {
       let score = this.score.toString(),
         count = score.slice(0, 1),
