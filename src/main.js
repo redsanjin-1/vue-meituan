@@ -3,8 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import './assets/js/rem.min'
 import { Toast, Lazyload, Indicator, MessageBox, Swipe, SwipeItem, Loadmore, Popup, Badge } from 'mint-ui'
 import axios from 'axios'
+import store from './store/index.js'
 
 Vue.config.productionTip = false
 
@@ -38,6 +40,7 @@ Vue.prototype.$ajax = axios
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

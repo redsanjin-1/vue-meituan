@@ -68,7 +68,7 @@
 ## 总结
 
 1. 熟练使用 vue 框架，对生命周期，计算属性，vue 指令，组件通信有较深理解
-2. 熟练应用 vue 的周边资源， vue-cli, vue-router, (这个版本暂时没用vuex，业务逻辑不复杂，同时也复习组件通信)
+2. 熟练应用 vue 的周边资源， vue-cli, vue-router, vuex ( tag v0.1 没用vuex，起初觉得业务逻辑不复杂，没必要用vuex,同时也复习组件通信,以后再写一个vuex版本即可)
 3. 熟悉使用 Mint-ui 的各个组件完成项目开发, 如 swipe, lazy-load, load-more等, 其中indicator, messagebox, toast有坑需注意
 4. 本次使用 scss 及 postcss 完成开发，特别是 postcss的px2rem插件的运用，详细请了解[这里](https://juejin.im/entry/5a9d07b76fb9a028cb2d2032?utm_medium=fe&utm_source=weixinqun) 
 5. 总结了一套 scss 的 mixin 库，常用的 js 工具函数库，vue的通用组件库  

@@ -83,7 +83,7 @@ export default new Router({
           component: Goods,
           name: 'goods',
           meta: {
-            keepAlive: false
+            keepAlive: true
           }
         },
         {
@@ -91,7 +91,7 @@ export default new Router({
           component: Ratings,
           name: 'ratings',
           meta: {
-            keepAlive: false
+            keepAlive: true
           }
         },
         {
@@ -99,7 +99,7 @@ export default new Router({
           name: 'seller',
           component: Seller,
           meta: {
-            keepAlive: false
+            keepAlive: true
           }
         }
       ]
@@ -131,5 +131,6 @@ export default new Router({
         keepAlive: true
       }
     }
-  ]
+  ],
+  mode: 'history'
 })

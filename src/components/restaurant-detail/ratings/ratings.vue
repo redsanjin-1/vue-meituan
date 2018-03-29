@@ -40,7 +40,7 @@
           <stars :score="comment.score"></stars>
           <p class="user-text">{{comment.text}}</p>
           <ul class="tag-list">
-            <li v-for="item in comment.recommend" class="tag-item">{{item}}</li>
+            <li v-for="{index,item} in comment.recommend" class="tag-item" :key="index">{{item}}</li>
           </ul>
           </div>
         </div>
@@ -50,8 +50,9 @@
 </template>
 
 <script type='text/ecmascript-6'>
-import api from "@/api/api.js";
+// import api from "@/api/api.js";
 import Stars from "@/components/base/stars/stars";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "ratings",
@@ -91,36 +92,23 @@ export default {
           return item.rateType === type;
         });
       }
-    }
+    },
+    ...mapState(["ratings"])
   },
   data() {
     return {
-      ratings: {},
       activedType: -1 //评论类型
     };
   },
   methods: {
-    _getRatings() {
-      this.$indicator.open("加载中...");
-      this.$ajax({
-        method: "get",
-        url: api.ratings
-      })
-        .then(res => {
-          this.$indicator.close();
-          this.ratings = res.data.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
+    ...mapActions(["getRatings"]),
     switchCommentType(type) {
       this.activedType = type;
     }
   },
   created() {},
   mounted() {
-    this._getRatings();
+    this.getRatings();
   },
   activated() {},
   destroyed() {}

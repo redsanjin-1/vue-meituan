@@ -33,6 +33,7 @@
             </div>
           </div>
         </div>
+        <div class="blank-block"></div>
       </div>
     </div>
     <cart :goods="goods" ref="shopcartRef"></cart>
@@ -57,14 +58,15 @@
         </div>
       </div>
     </transition>
-      <div class="mask" v-show="isShowDetail" @click="hideDetail"></div>
+    <div class="mask" v-show="isShowDetail" @click="hideDetail"></div>
   </div>
-</template>
+</template> 
 
 <script type='text/ecmascript-6'>
-import api from "@/api/api.js";
+// import api from "@/api/api.js";
 import Cart from "@/components/base/cart/cart";
 import CartControll from "@/components/base/cart-controll/cart-controll";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "goods",
@@ -75,18 +77,18 @@ export default {
   props: {},
   data() {
     return {
-      goods: [],
-      // 每一个大类别的高度
-      listHeight: [],
       // 右侧列表滚动的距离
       scrollY: 0,
-      rightBar: [],
       // 左侧高亮导航的 index
       activedBar: 0,
+      // 列表高度刚好一屏
       barHeight: 1000,
       // 商品详情弹窗
       foodDetail: {},
-      isShowDetail: false
+      // 商品详情弹窗
+      isShowDetail: false,
+      // 每一个大类别的高度
+      listHeight: []
     };
   },
   // 试用指令，可以忽略
@@ -104,15 +106,25 @@ export default {
     }
   },
   computed: {
+    ...mapState(["goods"]),
+    // 左侧导航栏
     leftBar() {
       let leftBar = [];
       this.goods.map(item => {
         leftBar.push({
           name: item.name,
-          totallCount: item.totallCount
+          totallCount: item.selected_count
         });
       });
       return leftBar;
+    },
+    // 右侧商品栏
+    rightBar() {
+      let rightBar = [];
+      this.goods.map(item => {
+        rightBar = rightBar.concat(item.foods);
+      });
+      return rightBar;
     },
     currentIndex() {
       for (let i = 0; i < this.listHeight.length; i++) {
@@ -128,50 +140,28 @@ export default {
     }
   },
   methods: {
-    _getGoods() {
-      this.$indicator.open("加载中...");
-      this.$ajax({
-        method: "get",
-        url: api.goods
-      })
-        .then(res => {
-          this.$indicator.close();
-          this._normalizeBar(res.data.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    _normalizeBar(arr) {
-      this.goods = arr;
-
-      this.$nextTick(() => {
-        let rightBar = [],
-          listHeight = [],
-          currentHeight = 0,
-          foodList = this.$refs.listView.getElementsByClassName("food-item");
-        arr.map(item => {
-          rightBar = rightBar.concat(item.foods);
-        });
-
+    ...mapActions(["getGoods"]),
+    _normalizeBar() {
+      // 右侧列表滚动 事件
+      this.$refs.listView.addEventListener(
+        "scroll",
+        e => {
+          this.scrollY = e.currentTarget.scrollTop;
+        },
+        false
+      );
+      let listHeight = [];
+      if (this.$refs.listView) {
+        let foodList = this.$refs.listView.getElementsByClassName("food-item"),
+          currentHeight = 0;
         // 设置 右侧列表每一大项的高度
         listHeight.push(currentHeight);
         for (let i = 0; i < foodList.length; i++) {
           currentHeight += foodList[i].clientHeight;
           listHeight.push(currentHeight);
         }
-        this.rightBar = rightBar;
-        this.listHeight = listHeight;
-
-        // 右侧列表滚动 事件
-        this.$refs.listView.addEventListener(
-          "scroll",
-          e => {
-            this.scrollY = e.currentTarget.scrollTop;
-          },
-          false
-        );
-      });
+      }
+      this.listHeight = listHeight;
     },
     _setBarHeight() {
       // 88为顶部 tab栏 ( 40 ) 底部购物车栏 ( 48 )
@@ -193,15 +183,17 @@ export default {
     },
     hideDetail() {
       this.isShowDetail = false;
-    },
-    setScrollY(height) {
-      this.scrollY = height;
     }
   },
   created() {},
   mounted() {
     this._setBarHeight();
-    this._getGoods();
+    this.getGoods();
+    // this.$nextTick(function() {
+    //   this._normalizeBar();
+    // });
+    // 很奇怪，上面的代码不行
+    setTimeout(this._normalizeBar, 500);
   },
   activated() {},
   destroyed() {}
@@ -212,7 +204,7 @@ export default {
 @import "~@/assets/scss/mixin.scss";
 .good-list-wrapper {
   display: flex;
-  height: 100%;
+  // height: 100%;
   font-size: 14px; /*no*/
   margin-bottom: 48px; /*no*/
   background-color: #fff;
@@ -237,6 +229,8 @@ export default {
     }
     .activedBar {
       background-color: #fff;
+      border-left: 3px solid #ffda61; /*no*/
+      box-sizing: border-box;
     }
   }
   .right-bar {
@@ -298,6 +292,10 @@ export default {
           }
         }
       }
+    }
+    // 为了最后一个二级栏目能高亮
+    .blank-block {
+      height: 120px;
     }
   }
 }

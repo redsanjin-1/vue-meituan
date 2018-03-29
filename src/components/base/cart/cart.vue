@@ -1,74 +1,75 @@
-<template>
-    <div class="cart-wrapper">
-      <!-- 购物车底部栏 -->
-      <div class="cart-content">
-        <div class="mt-cart" :class="{emptyCart:!hasGood,noemptyCart:hasGood,bounce:bounce}" @click="tapShowActivity" ref="logo">
-          <div class="totall-count">
-            <mt-badge v-show="totallCount>0" type="small" color="#ff7416">{{totallCount}}</mt-badge>        
-          </div>
+<template> 
+  <div class="cart-wrapper">
+    <!-- 购物车底部栏 -->
+    <div class="cart-content">
+      <div class="mt-cart" :class="{emptyCart:!hasGood,noemptyCart:hasGood,bounce:bounce}" @click="tapShowActivity" ref="logo">
+        <div class="totall-count">
+          <mt-badge v-show="totallCount>0" type="small" color="#ff7416">{{totallCount}}</mt-badge>        
         </div>
-        <div class="cart-price-wrapper" @click="tapShowActivity">
-          <div v-if="hasGood">
-            <p class="cart-price" :class="{highlight:totallAmount>0}">{{totallAmount}}</p>
-            <p class="delivery-fee">配送费:¥{{deliveryFee}}</p>
-          </div>
-          <p v-else>购物车空空如也 ~</p>
-        </div>
-        <div class="btn-wrapper" :class="{btnHightlight:totallAmount>minOrderAmount}">
-          <p v-show="!hasGood">¥{{minOrderAmount}}起送</p>
-          <p v-show="hasGood&&totallAmount<minOrderAmount">还差¥{{minOrderAmount-totallAmount}}</p>
-          <p v-show="hasGood&&totallAmount>minOrderAmount" @click="pay">去结算</p>
-        </div> 
       </div>
-        <!-- 购物车列表 -->
-      <transition name="slide">
-        <div class="cart-list-wrapper" v-show="showCart">
-          <div class="list-header">
-            <span class="list-title">已选商品</span>
-            <span class="btn-clearcart" @click="clearAllGoods">
-              <i class="iconfont icon-delete"></i> 清空
-            </span>
-          </div>
-          <div class="list-content">
-            <ul class="food-list-wrapper">
-              <li v-for="item in cartList" :key="item.item_id" class="food-item">
-                <span class="food-name">{{item.name}}</span>
-                <span class="food-price price-highlight">¥{{item.price}}</span>
-                <span class="food-price-cartcontroll">
-                  <cart-controll :food="item"></cart-controll>
-                </span>
-              </li>
-            </ul>
-            <div class="food-box-fee-wrapper">
-              <span class="title">餐盒</span>
-              <span class="food-box-fee price-highlight">¥{{foodBoxFee}}</span>
-            </div>
+      <div class="cart-price-wrapper" @click="tapShowActivity">
+        <div v-if="hasGood">
+          <p class="cart-price" :class="{highlight:totallAmount>0}">{{totallAmount}}</p>
+          <p class="delivery-fee">配送费:¥{{deliveryFee}}</p>
+        </div>
+        <p v-else>购物车空空如也 ~</p>
+      </div>
+      <div class="btn-wrapper" :class="{btnHightlight:totallAmount>minOrderAmount}">
+        <p v-show="!hasGood">¥{{minOrderAmount}}起送</p>
+        <p v-show="hasGood&&totallAmount<minOrderAmount">还差¥{{minOrderAmount-totallAmount}}</p>
+        <p v-show="hasGood&&totallAmount>minOrderAmount" @click="pay">去结算</p>
+      </div> 
+    </div>
+      <!-- 购物车列表 -->
+    <transition name="slide">
+      <div class="cart-list-wrapper" v-show="showCart">
+        <div class="list-header">
+          <span class="list-title">已选商品</span>
+          <span class="btn-clearcart" @click="clearAllGoods">
+            <i class="iconfont icon-delete"></i> 清空
+          </span>
+        </div>
+        <div class="list-content">
+          <ul class="food-list-wrapper">
+            <li v-for="item in cartList" :key="item.item_id" class="food-item">
+              <span class="food-name">{{item.name}}</span>
+              <span class="food-price price-highlight">¥{{item.price}}</span>
+              <span class="food-price-cartcontroll">
+                <cart-controll :food="item" ></cart-controll>
+              </span>
+            </li>
+          </ul>
+          <div class="food-box-fee-wrapper">
+            <span class="title">餐盒</span>
+            <span class="food-box-fee price-highlight">¥{{foodBoxFee}}</span>
           </div>
         </div>
-      </transition>
-      <!-- 遮罩 -->
-      <transition name="fade">
-        <div class="mask" v-show="showCart" @click="tapShowActivity"></div>
-      </transition>
-      <!-- 飞行小球 -->
-      <div class="ball-content">
-        <div v-for="(ball,index) in balls" :key="index">
-          <transition name="drop"
-                      @before-enter="beforeDrop"
-                      @enter="dropping"
-                      @after-enter="afterDrop">
-            <div class="ball" v-show="ball.show">
-              <div class="inner inner-hook"></div>
-            </div>
-          </transition>
-        </div>
+      </div>
+    </transition>
+    <!-- 遮罩 --> 
+    <transition name="fade">
+      <div class="mask" v-show="showCart" @click="tapShowActivity"></div>
+    </transition>
+    <!-- 飞行小球 -->
+    <div class="ball-content">
+      <div v-for="(ball,index) in balls" :key="index">
+        <transition name="drop"
+                    @before-enter="beforeDrop"
+                    @enter="dropping"
+                    @after-enter="afterDrop">
+          <div class="ball" v-show="ball.show">
+            <div class="inner inner-hook"></div>
+          </div>
+        </transition>
       </div>
     </div>
+  </div>
 </template>
 
 <script type='text/ecmascript-6'>
 import utils from "@/assets/js/utils.js";
 import CartControll from "@/components/base/cart-controll/cart-controll";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   components: {
@@ -104,20 +105,8 @@ export default {
     };
   },
   computed: {
-    cartList() {
-      const cartList = [];
-      this.goods.map(good => {
-        let totallCount = 0;
-        good.foods.map(item => {
-          if (item.count) {
-            totallCount += item.count;
-            cartList.push(item);
-          }
-        });
-        this.$set(good, "totallCount", totallCount);
-      });
-      return cartList;
-    },
+    ...mapGetters(["cartList"]),
+    ...mapGetters(["totallCount"]),
     hasGood() {
       return this.cartList.length > 0;
     },
@@ -150,13 +139,6 @@ export default {
         }
         return !this.foldCartList;
       }
-    },
-    totallCount() {
-      let count = 0;
-      this.cartList.map(item => {
-        count += item.count;
-      });
-      return count;
     }
   },
   methods: {
@@ -168,32 +150,9 @@ export default {
     tapShowActivity() {
       this.foldCartList = !this.foldCartList;
     },
-    clearAllGoods() {
-      this.cartList.map(item => {
-        if (item.count) {
-          item.count = null;
-        }
-      });
-      function bindSort(arr) {
-        if (arr.length == 1) {
-          return arr;
-        }
-        let midIndex = Math.floor(arr.length / 2),
-          midValue = arr.splice(midIndex, 1)[0],
-          left = [],
-          right = [];
-        arr.map(function(item) {
-          if (item <= midValue) {
-            left.push(item);
-          } else if (item > midValue) {
-            right.push(item);
-          }
-        });
-        return bindSort(left)
-          .concat([midValue])
-          .concat(bindSort(right));
-      }
-    },
+    ...mapMutations({
+      clearAllGoods: "CLEAR_CART"
+    }),
     // 点击 + 派发的事件
     // 取一个未下落的小球执行接下来的下落动作
     drop(el) {
@@ -461,7 +420,7 @@ export default {
     }
   }
   .bounce {
-    animation: bounce 0.5s;
+    animation: bounce 0.3s 0.1s;
   }
 }
 </style>

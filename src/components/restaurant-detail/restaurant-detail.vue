@@ -15,7 +15,7 @@
             <span class="res-delivery-mode">{{resInfo.delivery_mode}}</span>/
             <span class="res-delivery-time">{{resInfo.avg_delivery_time}}分钟送达</span>
           </p>
-          <p class="res-activity" v-if="resInfo.activities.length>0">
+          <p class="res-activity" v-if="activityCount>0">
             <span class="res-iconname" :style="{backgroundColor:'#'+resInfo.activities[0].icon_color}">{{resInfo.activities[0].icon_name}}</span>
             <span class="res-activity-name">{{resInfo.activities[0].name}}</span>
           </p>
@@ -42,7 +42,7 @@
         <i class="iconfont icon-close popup-close" @click="tapShowActivity"></i>
       </div>
       <div class="popup-content">
-        <ul v-if="resInfo.activities.length>0">
+        <ul v-if="activityCount>0">
           <li v-for="item in resInfo.activities" :key="item.description" class="activity-item">
             <span :style="{backgroundColor:'#'+item.icon_color}" class="activity-item-iconname">{{item.icon_name}}</span>
             {{item.description}}
@@ -77,52 +77,23 @@
 
 <script type='text/ecmascript-6'>
 import api from "@/api/api.js";
-import utils from "@/assets/js/utils.js";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   components: {},
   props: {},
   data() {
     return {
-      resInfo: {
-        activities: []
-      },
       showActivity: false,
       activedTabIndex: 0
     };
   },
   computed: {
-    activityCount: function() {
-      return this.resInfo.activities.length;
-    }
-  },
-  directives: {
-    // fixedTop: {
-    //   inserted(el) {
-    //     document.addEventListener("scroll", function(e) {
-    //     if (e.currentTarget.scrollTop > 118) {
-    //       this.hasScrollToTarget = true;
-    //     } else {
-    //       this.hasScrollToTarget = false;
-    //     }
-    //     });
-    //   }
-    // }
+    ...mapGetters(["activityCount"]),
+    ...mapState(["resInfo"])
   },
   methods: {
-    _getResInfo() {
-      this.$ajax({
-        method: "get",
-        url: api.resInfo
-      })
-        .then(res => {
-          this.resInfo = res.data.data;
-          utils.store.setLocalstorage("resInfo", res.data.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
+    ...mapActions(["getResInfo"]),
     goBack() {
       this.$router.push("/index");
     },
@@ -132,21 +103,11 @@ export default {
     },
     tapShowActivity() {
       this.showActivity = !this.showActivity;
-    },
-    onResWrapperScroll() {
-      this.$nextTick(() => {
-        this.$refs.resWrapper.onscroll = function(e) {
-          console.log(e);
-          console.log(1);
-        };
-        console.log(this.$refs);
-      });
     }
   },
   created() {},
   mounted() {
-    this._getResInfo();
-    // this.onResWrapperScroll();
+    this.getResInfo();
   },
   activated() {
     // 由于使用 keep-alive ，若每次进入页面需重新获取数据，须在这个钩子函数执行
@@ -216,7 +177,7 @@ export default {
   .fn-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     // flex: 0 0 140px;
     width: 140px;
     height: 160px;

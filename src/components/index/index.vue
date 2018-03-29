@@ -47,6 +47,7 @@ import TabTypes from "@/components/base/tab-types/tab-types";
 import RestaurantItem from "@/components/restaurant-item/restaurant-item";
 import TabBar from "@/components/base/tab-bar/tab-bar";
 import TitleBar from "@/components/base/title-bar/title-bar";
+import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -168,14 +169,13 @@ export default {
       }
     },
     goResDetail(id) {
+      this.GO_RESDETAILS(id);
       this.$router.push("/restaurant/" + id);
-    }
+    },
+    ...mapMutations(["GO_RESDETAILS"])
   },
   mounted() {
     this.listWrapperHeight = document.documentElement.clientHeight - 50;
-    // this._getSwipeList();
-    // this._getItemTypes();
-    // this._getRestaurantList();
     this._minit();
   }
 };
