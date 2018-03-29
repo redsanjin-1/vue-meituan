@@ -40,7 +40,7 @@
 
 >点餐  
 
-![](http://p53zq2w8v.bkt.clouddn.com/res/goods.gif)  
+![](http://p53zq2w8v.bkt.clouddn.com/res/mgood.gif)  
 
 (1) 左右两列数据联动（即点击左侧二级导航栏会跳转到相应商品列表组，右侧商品列表滚动左侧相应二级导航栏背景高亮）。  
 实现思路：是用一个数组存储每一个子项的相对于商品列表的scrollTop，点击左侧导航栏传入导航栏的index,跳转到相应位置，右侧列表监听scroll事件，根据scrollTop判断左侧应该高亮的导航栏的index。  
@@ -59,7 +59,7 @@
   
 >商家  
 
-![](http://p53zq2w8v.bkt.clouddn.com/res/seller.gif)  
+![](http://p53zq2w8v.bkt.clouddn.com/res/seller1.gif)  
 
 (1) 商家详情信息item 复用 cross-item 组件  
 
