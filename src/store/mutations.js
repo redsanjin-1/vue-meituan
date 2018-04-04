@@ -17,7 +17,10 @@ export default {
   },
   [GET_GOODS](state, res) {
     state.goods = res
-    utils.store.setLocalstorage('goods', res);
+    let localGoods = utils.store.getLocalstorage('goods')
+    if(!localGoods){
+      utils.store.setLocalstorage('goods', localGoods);
+    }
   },
   [GET_RATINGS](state, res) {
     state.ratings = res
@@ -32,14 +35,20 @@ export default {
       index = food.index;
     if (state.goods[category].foods[index].count === undefined) {
       Vue.set(state.goods[category].foods[index], 'count', 1);
+      Vue.set(state.goods[category], 'selected_count', 1);      
+      utils.store.setLocalstorage('goods',state.goods);
     } else {
-      state.goods[category].foods[index].count += 1
+      Vue.set(state.goods[category].foods[index],'count',++ state.goods[category].foods[index].count);
+      Vue.set(state.goods[category],'selected_count',++state.goods[category].selected_count);      
+      utils.store.setLocalstorage('goods',state.goods);      
     }
   },
   [REMOVE_FOOD](state, food) {
     let category = food.category,
       index = food.index;
-    state.goods[category].foods[index].count -= 1
+      Vue.set(state.goods[category].foods[index],'count',--state.goods[category].foods[index].count);    
+      Vue.set(state.goods[category],'selected_count',--state.goods[category].selected_count);            
+    utils.store.setLocalstorage('goods',state.goods)    
   },
   [CLEAR_CART](state) {
     state.goods.map(goods => {
@@ -48,5 +57,6 @@ export default {
         food.count = 0
       })
     })
+    utils.store.setLocalstorage('goods',state.goods)
   }
 }

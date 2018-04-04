@@ -107,10 +107,10 @@ export default {
   },
   created() {},
   mounted() {
-    this.getResInfo();
   },
   activated() {
     // 由于使用 keep-alive ，若每次进入页面需重新获取数据，须在这个钩子函数执行
+    this.getResInfo();    
   },
   destroyed() {}
 };

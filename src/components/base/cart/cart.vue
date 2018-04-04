@@ -328,6 +328,8 @@ export default {
       }
     }
     .list-content {
+      max-height:250px;/*no*/
+      overflow: auto;
       font-size: 16px; /*no*/
       .food-list-wrapper {
         margin-bottom: 20px;

@@ -108,9 +108,10 @@ export default {
   },
   created() {},
   mounted() {
-    this.getRatings();
+    this.getRatings();    
   },
-  activated() {},
+  activated() {
+  },
   destroyed() {}
 };
 </script>

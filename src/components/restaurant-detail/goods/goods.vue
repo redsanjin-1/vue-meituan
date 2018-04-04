@@ -66,7 +66,8 @@
 // import api from "@/api/api.js";
 import Cart from "@/components/base/cart/cart";
 import CartControll from "@/components/base/cart-controll/cart-controll";
-import { mapActions, mapState } from "vuex";
+import utils from "@/assets/js/utils";
+import { mapActions, mapState,mapMutations } from "vuex";
 
 export default {
   name: "goods",
@@ -183,19 +184,32 @@ export default {
     },
     hideDetail() {
       this.isShowDetail = false;
-    }
+    },
+    ...mapMutations({
+      getLocalGoods:'GET_GOODS'
+    })
   },
   created() {},
   mounted() {
+    console.log('mounted');
+
     this._setBarHeight();
     this.getGoods();
+    setTimeout(this._normalizeBar, 500);
+    // 很奇怪，下面的代码不行    
+    // this.getGoods();
     // this.$nextTick(function() {
     //   this._normalizeBar();
     // });
-    // 很奇怪，上面的代码不行
-    setTimeout(this._normalizeBar, 500);
   },
-  activated() {},
+  activated() {
+    // 由于切换到子路由，vuex会失效，所以需重新commit mutations
+    let goods = JSON.parse(utils.store.getLocalstorage('goods'));
+    if(goods){
+      this.getLocalGoods(goods);
+    }
+    console.log('actived');            
+  },
   destroyed() {}
 };
 </script>
